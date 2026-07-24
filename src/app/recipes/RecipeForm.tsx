@@ -1,7 +1,7 @@
 'use client'
+import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/src/lib/supabase'
 import { Recipe, RecipeIngredient } from '@/src/types'
 
 interface IngredientRow {
@@ -61,10 +61,8 @@ export default function RecipeForm({ recipe, existingIngredients = [] }: Props) 
   function removeIngredient(idx: number) { setIngredients(prev => prev.filter((_, i) => i !== idx)) }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!title.trim()) { setError('Title is required'); return }
-    setSaving(true)
-    setError('')
+    const supabase = createSupabaseBrowser()
+    const { data: { user } } = await supabase.auth.getUser()
 
     const recipePayload = {
       title: title.trim(),
@@ -74,6 +72,7 @@ export default function RecipeForm({ recipe, existingIngredients = [] }: Props) 
       cook_time_mins: cookTime === '' ? null : Number(cookTime),
       tags,
       steps: steps.filter(s => s.trim()),
+      user_id: user?.id,
     }
 
     let recipeId = recipe?.id

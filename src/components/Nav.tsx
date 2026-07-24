@@ -1,4 +1,6 @@
 'use client'
+import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -13,6 +15,15 @@ const links = [
 export default function Nav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const supabase = createSupabaseBrowser()
+  const router = useRouter()
+
+  async function handleSignOut() {
+    await supabase.auth.signOut()
+    router.push('/auth')
+    router.refresh()
+  }
+  
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
@@ -34,6 +45,14 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+
+          <button
+            onClick={handleSignOut}
+            className="px-3 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors no-print"
+          >
+            Sign out
+          </button>
+
         </div>
 
         {/* Mobile hamburger */}
@@ -63,6 +82,13 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+
+          <button
+            onClick={handleSignOut}
+            className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors text-left"
+          >
+            Sign out
+          </button>
         </div>
       )}
     </nav>

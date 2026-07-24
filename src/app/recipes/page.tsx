@@ -1,9 +1,10 @@
-import { supabase } from '@/src/lib/supabase'
+import { createSupabaseServer } from '@/src/lib/supabaseServer'
 import { Recipe, RecipeIngredient } from '@/src/types'
 import { getInventory } from '@/src/lib/getInventory'
 import RecipesClient from '@/src/app/recipes/RecipeClient'
 
 export default async function RecipesPage() {
+  const supabase = await createSupabaseServer()
   const [
     { data: recipes, error },
     { data: allRecipeIngredients },

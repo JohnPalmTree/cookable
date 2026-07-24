@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { supabase } from '@/src/lib/supabase'
 import { Ingredient, IngredientCategory } from '@/src/types'
+import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
 
 const CATEGORIES: IngredientCategory[] = [
   'produce','dairy','meat','seafood','grains','canned','frozen','condiments','spices','other'
@@ -37,10 +37,14 @@ export default function IngredientForm({ ingredient, onSaved, onClose }: Props) 
     setSaving(true)
     setError('')
 
+    const supabase = createSupabaseBrowser()
+    const { data: { user } } = await supabase.auth.getUser()
+
     const payload = {
       ...form,
       expiry_date: form.expiry_date || null,
       notes: form.notes || null,
+      user_id: user?.id,
     }
 
     let data, err

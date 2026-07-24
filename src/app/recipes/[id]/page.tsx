@@ -1,5 +1,5 @@
 import PrintButton from '@/src/app/recipes/PrintButton'
-import { supabase } from '@/src/lib/supabase'
+import { createSupabaseServer } from '@/src/lib/supabaseServer'
 import { Recipe, RecipeIngredient } from '@/src/types'
 import { getInventory } from '@/src/lib/getInventory'
 import { matchIngredients, recipeAvailability } from '@/src/lib/matchIngredients'
@@ -9,6 +9,8 @@ import { notFound } from 'next/navigation'
 
 export default async function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+
+  const supabase = await createSupabaseServer()
 
   const [{ data: recipe, error }, { data: ingredients }, inventory] = await Promise.all([
     supabase.from('recipes').select('*').eq('id', id).single(),

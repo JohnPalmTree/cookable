@@ -1,8 +1,9 @@
-import { supabase } from '@/src/lib/supabase'
+import { createSupabaseServer } from '@/src/lib/supabaseServer'
 import { Ingredient } from '@/src/types'
 import InventoryClient from '@/src/components/inventory/InventoryClient'
 
 export default async function InventoryPage() {
+  const supabase = await createSupabaseServer()
   const { data, error } = await supabase
     .from('ingredients')
     .select('*')

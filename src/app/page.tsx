@@ -1,8 +1,9 @@
-import { supabase } from '@/src/lib/supabase'
+import { createSupabaseServer } from '@/src/lib/supabaseServer'
 import { Ingredient, Recipe } from '@/src/types'
 import Link from 'next/link'
 
 export default async function Home() {
+const supabase = await createSupabaseServer()
   const [
     { data: ingredients },
     { data: recipes },
