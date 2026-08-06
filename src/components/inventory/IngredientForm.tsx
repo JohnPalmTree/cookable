@@ -40,11 +40,17 @@ export default function IngredientForm({ ingredient, onSaved, onClose }: Props) 
     const supabase = createSupabaseBrowser()
     const { data: { user } } = await supabase.auth.getUser()
 
+    if (!user) {
+      setError('Not logged in — please sign in again')
+      setSaving(false)
+      return
+    }
+
     const payload = {
       ...form,
       expiry_date: form.expiry_date || null,
       notes: form.notes || null,
-      user_id: user?.id,
+      user_id: user.id,
     }
 
     let data, err
