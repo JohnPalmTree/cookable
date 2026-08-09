@@ -61,8 +61,19 @@ export default function RecipeForm({ recipe, existingIngredients = [] }: Props) 
   function removeIngredient(idx: number) { setIngredients(prev => prev.filter((_, i) => i !== idx)) }
 
   async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!title.trim()) { setError('Title is required'); return }
+    setSaving(true)
+    setError('')
+
     const supabase = createSupabaseBrowser()
     const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      setError('Not logged in — please sign in again')
+      setSaving(false)
+      return
+    }
 
     const recipePayload = {
       title: title.trim(),
@@ -72,7 +83,7 @@ export default function RecipeForm({ recipe, existingIngredients = [] }: Props) 
       cook_time_mins: cookTime === '' ? null : Number(cookTime),
       tags,
       steps: steps.filter(s => s.trim()),
-      user_id: user?.id,
+      user_id: user.id,
     }
 
     let recipeId = recipe?.id
@@ -94,18 +105,25 @@ export default function RecipeForm({ recipe, existingIngredients = [] }: Props) 
     }
 
     // Replace recipe_ingredients: delete old, insert new
-    await supabase.from('recipe_ingredients').delete().eq('recipe_id', recipeId!)
+    const { error: delErr } = await supabase
+      .from('recipe_ingredients')
+      .delete()
+      .eq('recipe_id', recipeId!)
+
+    if (delErr) { setError(delErr.message); setSaving(false); return }
 
     const validIngredients = ingredients.filter(i => i.name.trim())
     if (validIngredients.length > 0) {
-      const { error: ingErr } = await supabase.from('recipe_ingredients').insert(
-        validIngredients.map(i => ({
-          recipe_id: recipeId,
-          name: i.name.trim(),
-          quantity: Number(i.quantity),
-          unit: i.unit,
-        }))
-      )
+      const { error: ingErr } = await supabase
+        .from('recipe_ingredients')
+        .insert(
+          validIngredients.map(i => ({
+            recipe_id: recipeId,
+            name: i.name.trim(),
+            quantity: Number(i.quantity),
+            unit: i.unit,
+          }))
+        )
       if (ingErr) { setError(ingErr.message); setSaving(false); return }
     }
 
