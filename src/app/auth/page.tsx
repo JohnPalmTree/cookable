@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation'
 import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 
 export default function AuthPage() {
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createSupabaseBrowser()
 
@@ -22,12 +22,16 @@ export default function AuthPage() {
       : await supabase.auth.signInWithPassword({ email, password })
 
     setLoading(false)
-    if (error) { setError(error.message); return }
+    if (error) {
+      setError(error.message)
+      return
+    }
     router.push('/')
     router.refresh()
   }
 
-  const inputClass = "w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
+  const inputClass =
+    'w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900'
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
@@ -40,15 +44,13 @@ export default function AuthPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {error && (
-            <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
               className={inputClass}
@@ -59,7 +61,7 @@ export default function AuthPage() {
             <input
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
               className={inputClass}
@@ -77,7 +79,10 @@ export default function AuthPage() {
         <p className="text-sm text-center text-gray-400 mt-4">
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
-            onClick={() => { setIsSignUp(prev => !prev); setError('') }}
+            onClick={() => {
+              setIsSignUp((prev) => !prev)
+              setError('')
+            }}
             className="text-gray-900 font-medium hover:underline"
           >
             {isSignUp ? 'Sign in' : 'Sign up'}

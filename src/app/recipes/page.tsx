@@ -5,11 +5,7 @@ import RecipesClient from '@/components/recipes/RecipeClient'
 
 export default async function RecipesPage() {
   const supabase = await createSupabaseServer()
-  const [
-    { data: recipes, error },
-    { data: allRecipeIngredients },
-    inventory,
-  ] = await Promise.all([
+  const [{ data: recipes, error }, { data: allRecipeIngredients }, inventory] = await Promise.all([
     supabase.from('recipes').select('*').order('created_at', { ascending: false }),
     supabase.from('recipe_ingredients').select('*'),
     getInventory(),

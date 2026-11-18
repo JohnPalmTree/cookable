@@ -19,17 +19,14 @@ export default function CookButton({ recipeId, matches, servings }: Props) {
     setCooking(true)
 
     const updates = matches
-      .filter(m => m.fridgeIngredient && m.status !== 'missing')
-      .map(m => ({
+      .filter((m) => m.fridgeIngredient && m.status !== 'missing')
+      .map((m) => ({
         id: m.fridgeIngredient!.id,
         quantity: Math.max(0, m.fridgeIngredient!.quantity - m.recipeIngredient.quantity),
       }))
 
     for (const update of updates) {
-      await supabase
-        .from('ingredients')
-        .update({ quantity: update.quantity })
-        .eq('id', update.id)
+      await supabase.from('ingredients').update({ quantity: update.quantity }).eq('id', update.id)
     }
 
     setCooking(false)

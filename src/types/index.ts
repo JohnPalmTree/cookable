@@ -1,7 +1,14 @@
 export type IngredientCategory =
-  | 'produce' | 'dairy' | 'meat' | 'seafood'
-  | 'grains' | 'canned' | 'frozen' | 'condiments'
-  | 'spices' | 'other'
+  | 'produce'
+  | 'dairy'
+  | 'meat'
+  | 'seafood'
+  | 'grains'
+  | 'canned'
+  | 'frozen'
+  | 'condiments'
+  | 'spices'
+  | 'other'
 
 export interface Ingredient {
   id: string

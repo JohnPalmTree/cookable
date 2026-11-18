@@ -18,18 +18,16 @@ export function generateShoppingList(
   selectedRecipeIds: string[],
   allRecipeIngredients: RecipeIngredient[],
   inventory: Ingredient[],
-  recipeNames: Record<string, string>
+  recipeNames: Record<string, string>,
 ): ShoppingItem[] {
   // Gather all ingredients needed across selected recipes
-  const needed = allRecipeIngredients.filter(ri =>
-    selectedRecipeIds.includes(ri.recipe_id)
-  )
+  const needed = allRecipeIngredients.filter((ri) => selectedRecipeIds.includes(ri.recipe_id))
 
   // Merge duplicates by fuzzy name match
   const merged: Map<string, ShoppingItem> = new Map()
 
   for (const ri of needed) {
-    const key = [...merged.keys()].find(k => fuzzyMatch(k, ri.name))
+    const key = [...merged.keys()].find((k) => fuzzyMatch(k, ri.name))
     const recipeName = recipeNames[ri.recipe_id] ?? 'Unknown'
 
     if (key) {
@@ -40,7 +38,7 @@ export function generateShoppingList(
         existing.recipeNames.push(recipeName)
       }
     } else {
-      const fridgeMatch = inventory.find(fi => fuzzyMatch(fi.name, ri.name))
+      const fridgeMatch = inventory.find((fi) => fuzzyMatch(fi.name, ri.name))
       const haveQuantity = fridgeMatch?.quantity ?? 0
       merged.set(ri.name, {
         name: ri.name,

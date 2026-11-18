@@ -16,16 +16,23 @@ function expiryStatus(dateStr: string | null): { label: string; color: string } 
   const expiry = new Date(dateStr)
   const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
-  if (diffDays < 0)  return { label: 'Expired',         color: 'bg-red-100 text-red-700' }
-  if (diffDays === 0) return { label: 'Expires today',  color: 'bg-orange-100 text-orange-700' }
+  if (diffDays < 0) return { label: 'Expired', color: 'bg-red-100 text-red-700' }
+  if (diffDays === 0) return { label: 'Expires today', color: 'bg-orange-100 text-orange-700' }
   if (diffDays <= 3) return { label: `${diffDays}d left`, color: 'bg-yellow-100 text-yellow-700' }
-  return { label: `${diffDays}d left`,                   color: 'bg-green-100 text-green-700' }
+  return { label: `${diffDays}d left`, color: 'bg-green-100 text-green-700' }
 }
 
 const CATEGORY_EMOJI: Record<string, string> = {
-  produce: '🥦', dairy: '🧀', meat: '🥩', seafood: '🐟',
-  grains: '🌾', canned: '🥫', frozen: '🧊', condiments: '🫙',
-  spices: '🌶️', other: '📦',
+  produce: '🥦',
+  dairy: '🧀',
+  meat: '🥩',
+  seafood: '🐟',
+  grains: '🌾',
+  canned: '🥫',
+  frozen: '🧊',
+  condiments: '🫙',
+  spices: '🌶️',
+  other: '📦',
 }
 
 export default function IngredientCard({ ingredient, onEdit, onDeleted }: Props) {
@@ -36,7 +43,11 @@ export default function IngredientCard({ ingredient, onEdit, onDeleted }: Props)
   async function handleDelete() {
     setDeleting(true)
     const { error } = await supabase.from('ingredients').delete().eq('id', ingredient.id)
-    if (error) { alert(error.message); setDeleting(false); return }
+    if (error) {
+      alert(error.message)
+      setDeleting(false)
+      return
+    }
     onDeleted(ingredient.id)
   }
 
@@ -55,32 +66,41 @@ export default function IngredientCard({ ingredient, onEdit, onDeleted }: Props)
             onClick={() => onEdit(ingredient)}
             className="text-gray-400 hover:text-gray-700 p-1 rounded transition-colors"
             title="Edit"
-          >✏️</button>
+          >
+            ✏️
+          </button>
           {confirmDelete ? (
             <div className="flex gap-1 items-center">
               <button
                 onClick={handleDelete}
                 disabled={deleting}
                 className="text-xs text-red-600 font-medium hover:underline"
-              >{deleting ? '...' : 'Confirm'}</button>
+              >
+                {deleting ? '...' : 'Confirm'}
+              </button>
               <button
                 onClick={() => setConfirmDelete(false)}
                 className="text-xs text-gray-400 hover:underline"
-              >Cancel</button>
+              >
+                Cancel
+              </button>
             </div>
           ) : (
             <button
               onClick={() => setConfirmDelete(true)}
               className="text-gray-400 hover:text-red-500 p-1 rounded transition-colors"
               title="Delete"
-            >🗑️</button>
+            >
+              🗑️
+            </button>
           )}
         </div>
       </div>
 
       <div className="flex items-center justify-between mt-1">
         <span className="text-lg font-semibold text-gray-800">
-          {ingredient.quantity} <span className="text-sm font-normal text-gray-400">{ingredient.unit}</span>
+          {ingredient.quantity}{' '}
+          <span className="text-sm font-normal text-gray-400">{ingredient.unit}</span>
         </span>
         {expiry && (
           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${expiry.color}`}>
@@ -90,7 +110,9 @@ export default function IngredientCard({ ingredient, onEdit, onDeleted }: Props)
       </div>
 
       {ingredient.notes && (
-        <p className="text-xs text-gray-400 border-t border-gray-100 pt-2 mt-1">{ingredient.notes}</p>
+        <p className="text-xs text-gray-400 border-t border-gray-100 pt-2 mt-1">
+          {ingredient.notes}
+        </p>
       )}
     </div>
   )

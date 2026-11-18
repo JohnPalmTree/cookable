@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 const links = [
-  { href: '/',          label: '🏠 Home' },
+  { href: '/', label: '🏠 Home' },
   { href: '/inventory', label: '🧊 Inventory' },
-  { href: '/recipes',   label: '📖 Recipes' },
-  { href: '/shopping',  label: '🛒 Shopping' },
+  { href: '/recipes', label: '📖 Recipes' },
+  { href: '/shopping', label: '🛒 Shopping' },
 ]
 
 export default function Nav() {
@@ -23,7 +23,6 @@ export default function Nav() {
     router.push('/auth')
     router.refresh()
   }
-  
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
@@ -52,13 +51,12 @@ export default function Nav() {
           >
             Sign out
           </button>
-
         </div>
 
         {/* Mobile hamburger */}
         <button
           className="sm:hidden text-gray-500 hover:text-gray-900 p-1"
-          onClick={() => setOpen(prev => !prev)}
+          onClick={() => setOpen((prev) => !prev)}
           aria-label="Toggle menu"
         >
           {open ? '✕' : '☰'}

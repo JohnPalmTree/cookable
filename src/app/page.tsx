@@ -3,11 +3,8 @@ import { Ingredient, Recipe } from '@/types'
 import Link from 'next/link'
 
 export default async function Home() {
-const supabase = await createSupabaseServer()
-  const [
-    { data: ingredients },
-    { data: recipes },
-  ] = await Promise.all([
+  const supabase = await createSupabaseServer()
+  const [{ data: ingredients }, { data: recipes }] = await Promise.all([
     supabase.from('ingredients').select('*'),
     supabase.from('recipes').select('*'),
   ])
@@ -18,13 +15,15 @@ const supabase = await createSupabaseServer()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const expiringSoon = ing.filter(i => {
+  const expiringSoon = ing.filter((i) => {
     if (!i.expiry_date) return false
-    const diff = Math.ceil((new Date(i.expiry_date).getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+    const diff = Math.ceil(
+      (new Date(i.expiry_date).getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+    )
     return diff >= 0 && diff <= 3
   })
 
-  const expired = ing.filter(i => {
+  const expired = ing.filter((i) => {
     if (!i.expiry_date) return false
     return new Date(i.expiry_date) < today
   })
@@ -37,11 +36,31 @@ const supabase = await createSupabaseServer()
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
-          { label: 'Ingredients', value: ing.length, href: '/inventory', color: 'bg-blue-50 text-blue-700' },
-          { label: 'Recipes', value: rec.length, href: '/recipes', color: 'bg-purple-50 text-purple-700' },
-          { label: 'Expiring soon', value: expiringSoon.length, href: '/inventory', color: 'bg-yellow-50 text-yellow-700' },
-          { label: 'Expired', value: expired.length, href: '/inventory', color: 'bg-red-50 text-red-700' },
-        ].map(stat => (
+          {
+            label: 'Ingredients',
+            value: ing.length,
+            href: '/inventory',
+            color: 'bg-blue-50 text-blue-700',
+          },
+          {
+            label: 'Recipes',
+            value: rec.length,
+            href: '/recipes',
+            color: 'bg-purple-50 text-purple-700',
+          },
+          {
+            label: 'Expiring soon',
+            value: expiringSoon.length,
+            href: '/inventory',
+            color: 'bg-yellow-50 text-yellow-700',
+          },
+          {
+            label: 'Expired',
+            value: expired.length,
+            href: '/inventory',
+            color: 'bg-red-50 text-red-700',
+          },
+        ].map((stat) => (
           <Link
             key={stat.label}
             href={stat.href}
@@ -58,8 +77,10 @@ const supabase = await createSupabaseServer()
         <section className="mb-8">
           <h2 className="text-base font-semibold text-gray-900 mb-3">⚠️ Use these soon</h2>
           <div className="bg-white border border-yellow-200 rounded-xl divide-y divide-gray-100">
-            {expiringSoon.map(i => {
-              const diff = Math.ceil((new Date(i.expiry_date!).getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+            {expiringSoon.map((i) => {
+              const diff = Math.ceil(
+                (new Date(i.expiry_date!).getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+              )
               return (
                 <div key={i.id} className="flex items-center justify-between px-4 py-3">
                   <span className="text-sm text-gray-800">{i.name}</span>
@@ -78,10 +99,20 @@ const supabase = await createSupabaseServer()
         <h2 className="text-base font-semibold text-gray-900 mb-3">Quick actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
-            { href: '/inventory', emoji: '🧊', label: 'Update inventory', sub: 'Add or edit fridge items' },
-            { href: '/recipes', emoji: '📖', label: 'Browse recipes', sub: 'See what you can cook' },
+            {
+              href: '/inventory',
+              emoji: '🧊',
+              label: 'Update inventory',
+              sub: 'Add or edit fridge items',
+            },
+            {
+              href: '/recipes',
+              emoji: '📖',
+              label: 'Browse recipes',
+              sub: 'See what you can cook',
+            },
             { href: '/shopping', emoji: '🛒', label: 'Shopping list', sub: 'Plan your next shop' },
-          ].map(link => (
+          ].map((link) => (
             <Link
               key={link.href}
               href={link.href}

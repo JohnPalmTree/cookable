@@ -21,13 +21,18 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
   const [adding, setAdding] = useState(false)
   const router = useRouter()
 
-  const recipeNames = Object.fromEntries(recipes.map(r => [r.id, r.title]))
-  const shoppingList = generateShoppingList(selectedIds.size > 0 ? [...selectedIds] : [], allRecipeIngredients, inventory, recipeNames)
-  const itemsToBuy = shoppingList.filter(i => i.toBuy > 0)
-  const alreadyHave = shoppingList.filter(i => i.toBuy === 0)
+  const recipeNames = Object.fromEntries(recipes.map((r) => [r.id, r.title]))
+  const shoppingList = generateShoppingList(
+    selectedIds.size > 0 ? [...selectedIds] : [],
+    allRecipeIngredients,
+    inventory,
+    recipeNames,
+  )
+  const itemsToBuy = shoppingList.filter((i) => i.toBuy > 0)
+  const alreadyHave = shoppingList.filter((i) => i.toBuy === 0)
 
   function toggleRecipe(id: string) {
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       const next = new Set(prev)
       next.has(id) ? next.delete(id) : next.add(id)
       return next
@@ -35,7 +40,7 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
   }
 
   function toggleChecked(name: string) {
-    setCheckedItems(prev => {
+    setCheckedItems((prev) => {
       const next = new Set(prev)
       next.has(name) ? next.delete(name) : next.add(name)
       return next
@@ -46,12 +51,12 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
     if (checkedItems.size === 0) return
     setAdding(true)
 
-    const itemsToAdd = shoppingList.filter(i => checkedItems.has(i.name) && i.toBuy > 0)
+    const itemsToAdd = shoppingList.filter((i) => checkedItems.has(i.name) && i.toBuy > 0)
 
     for (const item of itemsToAdd) {
       // Check if ingredient already exists in inventory
-      const existing = inventory.find(fi =>
-        fi.name.toLowerCase().trim() === item.name.toLowerCase().trim()
+      const existing = inventory.find(
+        (fi) => fi.name.toLowerCase().trim() === item.name.toLowerCase().trim(),
       )
 
       if (existing) {
@@ -60,20 +65,20 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
           .update({ quantity: existing.quantity + item.toBuy })
           .eq('id', existing.id)
       } else {
-        await supabase
-          .from('ingredients')
-          .insert({
-            name: item.name,
-            quantity: item.toBuy,
-            unit: item.unit,
-            category: 'other',
-          })
+        await supabase.from('ingredients').insert({
+          name: item.name,
+          quantity: item.toBuy,
+          unit: item.unit,
+          category: 'other',
+        })
       }
     }
 
     setAdding(false)
     router.refresh()
-    showToast(`Added ${itemsToAdd.length} item${itemsToAdd.length !== 1 ? 's' : ''} to your inventory`)
+    showToast(
+      `Added ${itemsToAdd.length} item${itemsToAdd.length !== 1 ? 's' : ''} to your inventory`,
+    )
   }
 
   // ── Stage: Select recipes ──────────────────────────────────────────
@@ -91,7 +96,9 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
           </button>
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">Select the recipes you want to cook and we'll build your shopping list.</p>
+        <p className="text-sm text-gray-500 mb-4">
+          Select the recipes you want to cook and we'll build your shopping list.
+        </p>
 
         {recipes.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
@@ -101,7 +108,7 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {recipes.map(recipe => {
+            {recipes.map((recipe) => {
               const selected = selectedIds.has(recipe.id)
               return (
                 <button
@@ -115,7 +122,9 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
                 >
                   <p className="font-medium leading-snug">{recipe.title}</p>
                   {recipe.description && (
-                    <p className={`text-xs mt-1 line-clamp-1 ${selected ? 'text-gray-300' : 'text-gray-400'}`}>
+                    <p
+                      className={`text-xs mt-1 line-clamp-1 ${selected ? 'text-gray-300' : 'text-gray-400'}`}
+                    >
                       {recipe.description}
                     </p>
                   )}
@@ -137,7 +146,10 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Your list</h1>
         <button
-          onClick={() => { setStage('select'); setCheckedItems(new Set()) }}
+          onClick={() => {
+            setStage('select')
+            setCheckedItems(new Set())
+          }}
           className="text-sm text-gray-400 hover:text-gray-700 transition-colors"
         >
           ← Change recipes
@@ -146,7 +158,7 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
 
       {/* Selected recipes summary */}
       <div className="flex flex-wrap gap-1 mb-6">
-        {[...selectedIds].map(id => (
+        {[...selectedIds].map((id) => (
           <span key={id} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
             {recipeNames[id]}
           </span>
@@ -160,7 +172,7 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
             To buy ({itemsToBuy.length})
           </h2>
           <ul className="space-y-2">
-            {itemsToBuy.map(item => {
+            {itemsToBuy.map((item) => {
               const checked = checkedItems.has(item.name)
               return (
                 <li
@@ -172,13 +184,17 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
-                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                    checked ? 'border-green-500 bg-green-500' : 'border-gray-300'
-                  }`}>
+                  <span
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                      checked ? 'border-green-500 bg-green-500' : 'border-gray-300'
+                    }`}
+                  >
                     {checked && <span className="text-white text-xs">✓</span>}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium ${checked ? 'line-through text-gray-400' : 'text-gray-900'}`}>
+                    <p
+                      className={`text-sm font-medium ${checked ? 'line-through text-gray-400' : 'text-gray-900'}`}
+                    >
                       {item.name}
                     </p>
                     <p className="text-xs text-gray-400">
@@ -209,13 +225,18 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
             Already in fridge ({alreadyHave.length})
           </h2>
           <ul className="space-y-1">
-            {alreadyHave.map(item => (
-              <li key={item.name} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400">
+            {alreadyHave.map((item) => (
+              <li
+                key={item.name}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400"
+              >
                 <span className="w-5 h-5 rounded-full border-2 border-green-300 bg-green-100 flex items-center justify-center shrink-0">
                   <span className="text-green-500 text-xs">✓</span>
                 </span>
                 <span>{item.name}</span>
-                <span className="ml-auto text-xs">{item.haveQuantity} {item.unit}</span>
+                <span className="ml-auto text-xs">
+                  {item.haveQuantity} {item.unit}
+                </span>
               </li>
             ))}
           </ul>
@@ -230,7 +251,9 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
             disabled={adding}
             className="w-full bg-green-600 text-white font-medium py-3 rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50 shadow-lg"
           >
-            {adding ? 'Adding...' : `Add ${checkedItems.size} checked item${checkedItems.size !== 1 ? 's' : ''} to inventory`}
+            {adding
+              ? 'Adding...'
+              : `Add ${checkedItems.size} checked item${checkedItems.size !== 1 ? 's' : ''} to inventory`}
           </button>
         </div>
       )}

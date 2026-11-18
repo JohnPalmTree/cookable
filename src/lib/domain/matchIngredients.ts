@@ -17,10 +17,10 @@ function fuzzyMatch(a: string, b: string): boolean {
 
 export function matchIngredients(
   recipeIngredients: RecipeIngredient[],
-  fridgeIngredients: Ingredient[]
+  fridgeIngredients: Ingredient[],
 ): IngredientMatch[] {
-  return recipeIngredients.map(ri => {
-    const match = fridgeIngredients.find(fi => fuzzyMatch(fi.name, ri.name))
+  return recipeIngredients.map((ri) => {
+    const match = fridgeIngredients.find((fi) => fuzzyMatch(fi.name, ri.name))
 
     if (!match) {
       return { recipeIngredient: ri, fridgeIngredient: null, status: 'missing' }
@@ -34,8 +34,8 @@ export function matchIngredients(
 
 export function recipeAvailability(matches: IngredientMatch[]): 'full' | 'partial' | 'none' {
   if (matches.length === 0) return 'full'
-  const missing = matches.filter(m => m.status === 'missing').length
-  const low     = matches.filter(m => m.status === 'low').length
+  const missing = matches.filter((m) => m.status === 'missing').length
+  const low = matches.filter((m) => m.status === 'low').length
 
   if (missing === 0 && low === 0) return 'full'
   if (missing === matches.length) return 'none'
