@@ -1,9 +1,9 @@
 'use client'
-import { showToast } from '@/src/components/Toast'
+import { showToast } from '@/components/Toast'
 import { useState } from 'react'
-import { Ingredient, Recipe, RecipeIngredient } from '@/src/types'
-import { generateShoppingList, ShoppingItem } from '@/src/lib/generateShoppingList'
-import { supabase } from '@/src/lib/supabase'
+import { Ingredient, Recipe, RecipeIngredient } from '@/types'
+import { generateShoppingList, ShoppingItem } from '@/lib/generateShoppingList'
+import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 interface Props {

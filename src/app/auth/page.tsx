@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
+import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 
 export default function AuthPage() {
   const [email, setEmail]       = useState('')

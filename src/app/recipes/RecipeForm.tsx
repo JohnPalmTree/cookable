@@ -1,8 +1,8 @@
 'use client'
-import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
+import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Recipe, RecipeIngredient } from '@/src/types'
+import { Recipe, RecipeIngredient } from '@/types'
 
 interface IngredientRow {
   id?: string

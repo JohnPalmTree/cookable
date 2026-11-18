@@ -1,5 +1,5 @@
-import { createSupabaseServer } from '@/src/lib/supabaseServer'
-import { Ingredient, Recipe } from '@/src/types'
+import { createSupabaseServer } from '@/lib/supabaseServer'
+import { Ingredient, Recipe } from '@/types'
 import Link from 'next/link'
 
 export default async function Home() {

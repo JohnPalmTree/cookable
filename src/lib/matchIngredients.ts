@@ -1,4 +1,4 @@
-import { Ingredient, RecipeIngredient } from '@/src/types'
+import { Ingredient, RecipeIngredient } from '@/types'
 
 export type MatchStatus = 'available' | 'low' | 'missing'
 

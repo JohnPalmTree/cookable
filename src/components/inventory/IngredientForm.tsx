@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient, IngredientCategory } from '@/src/types'
-import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
+import { Ingredient, IngredientCategory } from '@/types'
+import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 
 const CATEGORIES: IngredientCategory[] = [
   'produce','dairy','meat','seafood','grains','canned','frozen','condiments','spices','other'

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient, Recipe, RecipeIngredient } from '@/src/types'
-import { matchIngredients, recipeAvailability } from '@/src/lib/matchIngredients'
+import { Ingredient, Recipe, RecipeIngredient } from '@/types'
+import { matchIngredients, recipeAvailability } from '@/lib/matchIngredients'
 import RecipeCard from './RecipeCard'
 import Link from 'next/link'
 

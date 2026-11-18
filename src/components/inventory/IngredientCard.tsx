@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient } from '@/src/types'
-import { supabase } from '@/src/lib/supabase'
+import { Ingredient } from '@/types'
+import { supabase } from '@/lib/supabase'
 
 interface Props {
   ingredient: Ingredient

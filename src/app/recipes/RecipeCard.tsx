@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Recipe } from '@/src/types'
-import { supabase } from '@/src/lib/supabase'
+import { Recipe } from '@/types'
+import { supabase } from '@/lib/supabase'
 
 interface Props {
   recipe: Recipe

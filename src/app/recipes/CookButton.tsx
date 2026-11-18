@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/src/lib/supabase'
-import { IngredientMatch } from '@/src/lib/matchIngredients'
+import { supabase } from '@/lib/supabase'
+import { IngredientMatch } from '@/lib/matchIngredients'
 
 interface Props {
   recipeId: string

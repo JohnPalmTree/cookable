@@ -1,5 +1,5 @@
 'use client'
-import { createSupabaseBrowser } from '@/src/lib/supabaseBrowser'
+import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

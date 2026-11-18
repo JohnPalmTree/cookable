@@ -1,5 +1,5 @@
 import { createSupabaseServer } from './supabaseServer'
-import { Ingredient } from '@/src/types'
+import { Ingredient } from '@/types'
 
 export async function getInventory(): Promise<Ingredient[]> {
   const supabase = await createSupabaseServer()

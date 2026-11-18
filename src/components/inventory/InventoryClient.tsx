@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient } from '@/src/types'
+import { Ingredient } from '@/types'
 import IngredientCard from './IngredientCard'
 import IngredientForm from './IngredientForm'
 
