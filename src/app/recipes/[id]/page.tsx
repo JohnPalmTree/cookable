@@ -1,9 +1,9 @@
-import PrintButton from '@/app/recipes/PrintButton'
+import PrintButton from '@/components/recipes/PrintButton'
 import { createSupabaseServer } from '@/lib/supabaseServer'
 import { Recipe, RecipeIngredient } from '@/types'
 import { getInventory } from '@/lib/getInventory'
-import { matchIngredients, recipeAvailability } from '@/lib/matchIngredients'
-import CookButton from '@/app/recipes/CookButton'
+import { matchIngredients, recipeAvailability } from '@/lib/domain/matchIngredients'
+import CookButton from '@/components/recipes/CookButton'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 

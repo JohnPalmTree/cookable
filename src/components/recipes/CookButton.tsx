@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { IngredientMatch } from '@/lib/matchIngredients'
+import { IngredientMatch } from '@/lib/domain/matchIngredients'
 
 interface Props {
   recipeId: string

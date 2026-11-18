@@ -1,6 +1,6 @@
 import { createSupabaseServer } from '@/lib/supabaseServer'
 import { Recipe, RecipeIngredient } from '@/types'
-import RecipeForm from '@/app/recipes/RecipeForm'
+import RecipeForm from '@/components/recipes/RecipeForm'
 import { notFound } from 'next/navigation'
 
 export default async function EditRecipePage({ params }: { params: Promise<{ id: string }> }) {
