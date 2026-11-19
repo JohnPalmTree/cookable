@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
 
 export default function AuthPage() {
@@ -9,7 +8,6 @@ export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
   const supabase = createSupabaseBrowser()
 
   async function handleSubmit(e: React.FormEvent) {
@@ -26,8 +24,7 @@ export default function AuthPage() {
       setError(error.message)
       return
     }
-    router.push('/')
-    router.refresh()
+    window.location.assign('/')
   }
 
   const inputClass =
