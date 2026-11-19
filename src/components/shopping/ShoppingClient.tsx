@@ -2,7 +2,7 @@
 import { showToast } from '@/components/ui/Toast'
 import { useState } from 'react'
 import { Ingredient, Recipe, RecipeIngredient } from '@/types'
-import { generateShoppingList, ShoppingItem } from '@/lib/domain/generateShoppingList'
+import { generateShoppingList } from '@/lib/domain/generateShoppingList'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -34,7 +34,8 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
   function toggleRecipe(id: string) {
     setSelectedIds((prev) => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
   }
@@ -42,7 +43,8 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
   function toggleChecked(name: string) {
     setCheckedItems((prev) => {
       const next = new Set(prev)
-      next.has(name) ? next.delete(name) : next.add(name)
+      if (next.has(name)) next.delete(name)
+      else next.add(name)
       return next
     })
   }
@@ -97,7 +99,7 @@ export default function ShoppingClient({ recipes, allRecipeIngredients, inventor
         </div>
 
         <p className="text-sm text-gray-500 mb-4">
-          Select the recipes you want to cook and we'll build your shopping list.
+          Select the recipes you want to cook and we’ll build your shopping list.
         </p>
 
         {recipes.length === 0 ? (

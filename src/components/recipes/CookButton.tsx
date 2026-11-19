@@ -10,7 +10,7 @@ interface Props {
   servings: number
 }
 
-export default function CookButton({ recipeId, matches, servings }: Props) {
+export default function CookButton({ matches }: Props) {
   const [cooking, setCooking] = useState(false)
   const router = useRouter()
 
