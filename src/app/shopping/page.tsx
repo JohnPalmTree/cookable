@@ -1,15 +1,11 @@
-import { createSupabaseServer } from '@/src/lib/supabaseServer'
-import { Recipe, RecipeIngredient } from '@/src/types'
-import { getInventory } from '@/src/lib/getInventory'
-import ShoppingClient from '@/src/components/shopping/ShoppingClient'
+import { createSupabaseServer } from '@/lib/supabaseServer'
+import { Recipe, RecipeIngredient } from '@/types'
+import { getInventory } from '@/lib/getInventory'
+import ShoppingClient from '@/components/shopping/ShoppingClient'
 
 export default async function ShoppingPage() {
   const supabase = await createSupabaseServer()
-  const [
-    { data: recipes },
-    { data: allRecipeIngredients },
-    inventory,
-  ] = await Promise.all([
+  const [{ data: recipes }, { data: allRecipeIngredients }, inventory] = await Promise.all([
     supabase.from('recipes').select('*').order('title'),
     supabase.from('recipe_ingredients').select('*'),
     getInventory(),

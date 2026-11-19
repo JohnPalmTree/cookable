@@ -1,10 +1,22 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient } from '@/src/types'
+import { Ingredient } from '@/types'
 import IngredientCard from './IngredientCard'
 import IngredientForm from './IngredientForm'
 
-const CATEGORIES = ['all','produce','dairy','meat','seafood','grains','canned','frozen','condiments','spices','other']
+const CATEGORIES = [
+  'all',
+  'produce',
+  'dairy',
+  'meat',
+  'seafood',
+  'grains',
+  'canned',
+  'frozen',
+  'condiments',
+  'spices',
+  'other',
+]
 
 interface Props {
   initialIngredients: Ingredient[]
@@ -17,17 +29,15 @@ export default function InventoryClient({ initialIngredients }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<Ingredient | null>(null)
 
-  const filtered = ingredients.filter(i => {
+  const filtered = ingredients.filter((i) => {
     const matchesSearch = i.name.toLowerCase().includes(search.toLowerCase())
     const matchesCategory = category === 'all' || i.category === category
     return matchesSearch && matchesCategory
   })
 
   function handleSaved(ingredient: Ingredient) {
-    setIngredients(prev =>
-      editing
-        ? prev.map(i => i.id === ingredient.id ? ingredient : i)
-        : [ingredient, ...prev]
+    setIngredients((prev) =>
+      editing ? prev.map((i) => (i.id === ingredient.id ? ingredient : i)) : [ingredient, ...prev],
     )
     setShowForm(false)
     setEditing(null)
@@ -39,7 +49,7 @@ export default function InventoryClient({ initialIngredients }: Props) {
   }
 
   function handleDeleted(id: string) {
-    setIngredients(prev => prev.filter(i => i.id !== id))
+    setIngredients((prev) => prev.filter((i) => i.id !== id))
   }
 
   function handleClose() {
@@ -66,11 +76,11 @@ export default function InventoryClient({ initialIngredients }: Props) {
           type="text"
           placeholder="Search ingredients..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-gray-900"
         />
         <div className="flex gap-1 flex-wrap">
-          {CATEGORIES.map(cat => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategory(cat)}
@@ -91,7 +101,9 @@ export default function InventoryClient({ initialIngredients }: Props) {
         <div className="text-center py-20 text-gray-400">
           <p className="text-5xl mb-4">🧊</p>
           <p className="font-medium text-gray-600">
-            {search || category !== 'all' ? 'No ingredients match your search' : 'Your fridge is empty'}
+            {search || category !== 'all'
+              ? 'No ingredients match your search'
+              : 'Your fridge is empty'}
           </p>
           <p className="text-sm mt-1">
             {search || category !== 'all'
@@ -109,7 +121,7 @@ export default function InventoryClient({ initialIngredients }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filtered.map(ingredient => (
+          {filtered.map((ingredient) => (
             <IngredientCard
               key={ingredient.id}
               ingredient={ingredient}
@@ -122,11 +134,7 @@ export default function InventoryClient({ initialIngredients }: Props) {
 
       {/* Slide-over form */}
       {showForm && (
-        <IngredientForm
-          ingredient={editing}
-          onSaved={handleSaved}
-          onClose={handleClose}
-        />
+        <IngredientForm ingredient={editing} onSaved={handleSaved} onClose={handleClose} />
       )}
     </div>
   )

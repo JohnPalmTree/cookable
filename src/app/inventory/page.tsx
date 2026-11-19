@@ -1,6 +1,6 @@
-import { createSupabaseServer } from '@/src/lib/supabaseServer'
-import { Ingredient } from '@/src/types'
-import InventoryClient from '@/src/components/inventory/InventoryClient'
+import { createSupabaseServer } from '@/lib/supabaseServer'
+import { Ingredient } from '@/types'
+import InventoryClient from '@/components/inventory/InventoryClient'
 
 export default async function InventoryPage() {
   const supabase = await createSupabaseServer()

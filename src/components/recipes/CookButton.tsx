@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/src/lib/supabase'
-import { IngredientMatch } from '@/src/lib/matchIngredients'
+import { supabase } from '@/lib/supabase'
+import { IngredientMatch } from '@/lib/domain/matchIngredients'
 
 interface Props {
   recipeId: string
@@ -10,7 +10,7 @@ interface Props {
   servings: number
 }
 
-export default function CookButton({ recipeId, matches, servings }: Props) {
+export default function CookButton({ matches }: Props) {
   const [cooking, setCooking] = useState(false)
   const router = useRouter()
 
@@ -19,17 +19,14 @@ export default function CookButton({ recipeId, matches, servings }: Props) {
     setCooking(true)
 
     const updates = matches
-      .filter(m => m.fridgeIngredient && m.status !== 'missing')
-      .map(m => ({
+      .filter((m) => m.fridgeIngredient && m.status !== 'missing')
+      .map((m) => ({
         id: m.fridgeIngredient!.id,
         quantity: Math.max(0, m.fridgeIngredient!.quantity - m.recipeIngredient.quantity),
       }))
 
     for (const update of updates) {
-      await supabase
-        .from('ingredients')
-        .update({ quantity: update.quantity })
-        .eq('id', update.id)
+      await supabase.from('ingredients').update({ quantity: update.quantity }).eq('id', update.id)
     }
 
     setCooking(false)

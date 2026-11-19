@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { Ingredient, Recipe, RecipeIngredient } from '@/src/types'
-import { matchIngredients, recipeAvailability } from '@/src/lib/matchIngredients'
+import { Ingredient, Recipe, RecipeIngredient } from '@/types'
+import { matchIngredients, recipeAvailability } from '@/lib/domain/matchIngredients'
 import RecipeCard from './RecipeCard'
 import Link from 'next/link'
 
@@ -12,26 +12,26 @@ interface Props {
 }
 
 export default function RecipesClient({ initialRecipes, allRecipeIngredients, inventory }: Props) {
-const [recipes, setRecipes] = useState<Recipe[]>(initialRecipes)
-const [search, setSearch] = useState('')
-const [cookableOnly, setCookableOnly] = useState(false)
+  const [recipes, setRecipes] = useState<Recipe[]>(initialRecipes)
+  const [search, setSearch] = useState('')
+  const [cookableOnly, setCookableOnly] = useState(false)
 
   function getAvailability(recipeId: string) {
-    const ri = allRecipeIngredients.filter(i => i.recipe_id === recipeId)
+    const ri = allRecipeIngredients.filter((i) => i.recipe_id === recipeId)
     const matches = matchIngredients(ri, inventory)
     return recipeAvailability(matches)
   }
 
-  const filtered = recipes.filter(r => {
+  const filtered = recipes.filter((r) => {
     const matchesSearch =
       r.title.toLowerCase().includes(search.toLowerCase()) ||
-      r.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
+      r.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()))
     const matchesCookable = !cookableOnly || getAvailability(r.id) === 'full'
     return matchesSearch && matchesCookable
   })
 
   function handleDeleted(id: string) {
-    setRecipes(prev => prev.filter(r => r.id !== id))
+    setRecipes((prev) => prev.filter((r) => r.id !== id))
   }
 
   return (
@@ -52,11 +52,11 @@ const [cookableOnly, setCookableOnly] = useState(false)
           type="text"
           placeholder="Search recipes or tags..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-gray-900"
         />
         <button
-          onClick={() => setCookableOnly(prev => !prev)}
+          onClick={() => setCookableOnly((prev) => !prev)}
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
             cookableOnly
               ? 'bg-green-600 text-white border-green-600'
@@ -67,35 +67,35 @@ const [cookableOnly, setCookableOnly] = useState(false)
         </button>
       </div>
 
-        {filtered.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
-            <p className="text-5xl mb-4">📖</p>
-            <p className="font-medium text-gray-600">
-              {cookableOnly
-                ? 'Nothing cookable with your current inventory'
-                : search
+      {filtered.length === 0 ? (
+        <div className="text-center py-20 text-gray-400">
+          <p className="text-5xl mb-4">📖</p>
+          <p className="font-medium text-gray-600">
+            {cookableOnly
+              ? 'Nothing cookable with your current inventory'
+              : search
                 ? 'No recipes match your search'
                 : 'No recipes yet'}
-            </p>
-            <p className="text-sm mt-1">
-              {cookableOnly
-                ? 'Try restocking or adding more recipes'
-                : search
+          </p>
+          <p className="text-sm mt-1">
+            {cookableOnly
+              ? 'Try restocking or adding more recipes'
+              : search
                 ? 'Try a different search term or tag'
                 : 'Add your first recipe to get started'}
-            </p>
-            {!search && !cookableOnly && (
-              <Link
-                href="/recipes/new"
-                className="inline-block mt-4 bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
-              >
-                + Add recipe
-              </Link>
-            )}
-          </div>
-        ) : (
+          </p>
+          {!search && !cookableOnly && (
+            <Link
+              href="/recipes/new"
+              className="inline-block mt-4 bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              + Add recipe
+            </Link>
+          )}
+        </div>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map(recipe => (
+          {filtered.map((recipe) => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}

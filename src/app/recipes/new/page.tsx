@@ -1,4 +1,4 @@
-import RecipeForm from '@/src/app/recipes/RecipeForm'
+import RecipeForm from '@/components/recipes/RecipeForm'
 
 export default function NewRecipePage() {
   return <RecipeForm />

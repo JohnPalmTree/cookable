@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cookable: Digital Fridge & Cookbook
 
-## Getting Started
+A recipe and pantry manager: track what's in your fridge, see what you can
+cook, and generate a shopping list for the rest.
 
-First, run the development server:
+Built with Next.js 16, TypeScript, Tailwind CSS v4 and Supabase.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Local setup
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires Node 20.9 or newer (`.nvmrc` pins 24).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. `npm install`
+2. Copy `.env.example` to `.env.local` and fill in your Project URL and
+   publishable key from Supabase → Project Settings → API.
+3. `npm run dev`, then open http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Before opening a pull request, run `npm run check`
+(lint, types, formatting and a production build).
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command             | What it does                   |
+| ------------------- | ------------------------------ |
+| `npm run dev`       | Start the dev server           |
+| `npm run check`     | Everything CI checks, in order |
+| `npm run lint`      | ESLint                         |
+| `npm run typecheck` | TypeScript, no output files    |
+| `npm run format`    | Format all files with Prettier |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/app/` routes only
+- `src/components/ui/` reusable pieces (Toast, Skeleton)
+- `src/components/layout/` app shell (Nav)
+- `src/components/<area>/` inventory, recipes and shopping components
+- `src/lib/domain/` pure logic with no database or browser code
+- `src/lib/` Supabase clients and data access (reorganized in Sprint 3)
 
-## Deploy on Vercel
+## Troubleshooting (Windows)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Stale build cache: stop the server, then
+  `Remove-Item -Recurse -Force .next`
+- Every file shows as changed after switching machines: with a clean
+  `git status`, run `git rm -r -q --cached .` then `git reset --hard`
