@@ -8,7 +8,7 @@ export interface IngredientMatch {
   status: MatchStatus
 }
 
-function fuzzyMatch(a: string, b: string): boolean {
+export function fuzzyMatch(a: string, b: string): boolean {
   const normalize = (s: string) => s.toLowerCase().trim()
   const na = normalize(a)
   const nb = normalize(b)
