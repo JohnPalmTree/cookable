@@ -1,4 +1,5 @@
 'use client'
+import { daysUntil, startOfToday } from '@/lib/domain/dates'
 import { useState } from 'react'
 import { Ingredient } from '@/types'
 import { supabase } from '@/lib/supabase'
@@ -11,10 +12,9 @@ interface Props {
 
 function expiryStatus(dateStr: string | null): { label: string; color: string } | null {
   if (!dateStr) return null
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const expiry = new Date(dateStr)
-  const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+  const today = startOfToday()
+  const diffDays = daysUntil(dateStr, today)
+
 
   if (diffDays < 0) return { label: 'Expired', color: 'bg-red-100 text-red-700' }
   if (diffDays === 0) return { label: 'Expires today', color: 'bg-orange-100 text-orange-700' }
