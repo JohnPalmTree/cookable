@@ -15,7 +15,6 @@ function expiryStatus(dateStr: string | null): { label: string; color: string } 
   const today = startOfToday()
   const diffDays = daysUntil(dateStr, today)
 
-
   if (diffDays < 0) return { label: 'Expired', color: 'bg-red-100 text-red-700' }
   if (diffDays === 0) return { label: 'Expires today', color: 'bg-orange-100 text-orange-700' }
   if (diffDays <= 3) return { label: `${diffDays}d left`, color: 'bg-yellow-100 text-yellow-700' }

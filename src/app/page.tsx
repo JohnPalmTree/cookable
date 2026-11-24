@@ -14,7 +14,7 @@ export default async function Home() {
   const rec = (recipes ?? []) as Recipe[]
 
   const today = startOfToday()
-  
+
   const expiringSoon = ing.filter((i) => {
     if (!i.expiry_date) return false
     const diff = daysUntil(i.expiry_date, today)
