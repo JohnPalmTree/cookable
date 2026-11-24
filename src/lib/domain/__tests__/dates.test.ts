@@ -20,11 +20,11 @@ describe('dates', () => {
 })
 
 describe('dates known bugs (fixed in Sprint 4)', () => {
-  it.fails('does not treat an item expiring today as past', () => {
+  it.fails('does not treat an item expiring today as past (#7)', () => {
     expect(isPast('2026-11-20', today)).toBe(false)
   })
 
-  it.fails('never counts an item as both expired and expiring soon', () => {
+  it.fails('never counts an item as both expired and expiring soon (#7)', () => {
     const d = '2026-11-20'
     const expiringSoon = daysUntil(d, today) >= 0 && daysUntil(d, today) <= 3
     expect(isPast(d, today) && expiringSoon).toBe(false)

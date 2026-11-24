@@ -14,11 +14,11 @@ describe('fuzzyMatch', () => {
 })
 
 describe('fuzzyMatch known bugs (fixed in Sprint 4)', () => {
-  it.fails('does not match egg with eggplant', () => {
+  it.fails('does not match egg with eggplant (#6)', () => {
     expect(fuzzyMatch('egg', 'eggplant')).toBe(false)
   })
 
-  it.fails('does not match salt with unsalted butter', () => {
+  it.fails('does not match salt with unsalted butter (#6)', () => {
     expect(fuzzyMatch('salt', 'unsalted butter')).toBe(false)
   })
 })
@@ -47,7 +47,7 @@ describe('matchIngredients', () => {
     expect(m.status).toBe('available')
   })
 
-  it.fails('treats 2 lb in the fridge as enough for 500 g (units bug, Sprint 5)', () => {
+  it.fails('treats 2 lb in the fridge as enough for 500 g (#8)', () => {
     const [m] = matchIngredients([needs('chicken', 500, 'g')], [fridgeItem('chicken', 2, 'lb')])
     expect(m.status).toBe('available')
   })
