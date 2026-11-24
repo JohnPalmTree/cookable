@@ -24,6 +24,9 @@ export default function AuthPage() {
       setError(error.message)
       return
     }
+    // Full page load so the proxy sees the new session cookie.
+    // router.push reused a cached redirect back to /auth (see PR #4).
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.assign('/')
   }
 
