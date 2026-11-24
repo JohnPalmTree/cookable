@@ -1,3 +1,4 @@
+import { daysUntil, isPast, startOfToday } from '@/lib/domain/dates'
 import { createSupabaseServer } from '@/lib/supabaseServer'
 import { Ingredient, Recipe } from '@/types'
 import Link from 'next/link'
@@ -12,20 +13,18 @@ export default async function Home() {
   const ing = (ingredients ?? []) as Ingredient[]
   const rec = (recipes ?? []) as Recipe[]
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const today = startOfToday()
 
   const expiringSoon = ing.filter((i) => {
     if (!i.expiry_date) return false
-    const diff = Math.ceil(
-      (new Date(i.expiry_date).getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-    )
+    const diff = daysUntil(i.expiry_date, today)
+
     return diff >= 0 && diff <= 3
   })
 
   const expired = ing.filter((i) => {
     if (!i.expiry_date) return false
-    return new Date(i.expiry_date) < today
+    return isPast(i.expiry_date, today)
   })
 
   return (
@@ -78,9 +77,7 @@ export default async function Home() {
           <h2 className="text-base font-semibold text-gray-900 mb-3">⚠️ Use these soon</h2>
           <div className="bg-white border border-yellow-200 rounded-xl divide-y divide-gray-100">
             {expiringSoon.map((i) => {
-              const diff = Math.ceil(
-                (new Date(i.expiry_date!).getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-              )
+              const diff = daysUntil(i.expiry_date!, today)
               return (
                 <div key={i.id} className="flex items-center justify-between px-4 py-3">
                   <span className="text-sm text-gray-800">{i.name}</span>
