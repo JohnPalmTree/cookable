@@ -1,21 +1,95 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #fff5e6;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-success-ink: var(--success-ink);
+  --color-warning: var(--warning);
+  --color-warning-ink: var(--warning-ink);
+  --color-danger: var(--danger);
+  --color-danger-ink: var(--danger-ink);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--display);
+  --radius-button: 9999px;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Butter & sage is the default: it also applies when no data-theme is set. */
+:root,
+[data-theme='sage'] {
+  --canvas: #fbf3d0;
+  --surface: #fffdf4;
+  --surface-2: #f6edc0;
+  --ink: #2f3b2a;
+  --muted: #55624f;
+  --line: #e3d7a0;
+  --accent: #4f6b4a;
+  --accent-ink: #3f5a3b;
+  --on-accent: #ffffff;
+  --success: #dce6d4;
+  --success-ink: #2f4a2b;
+  --warning: #f6e7a8;
+  --warning-ink: #4a2f0e;
+  --danger: #f8e1d8;
+  --danger-ink: #8e3720;
+  --display: var(--font-lora);
+}
+
+[data-theme='terracotta'] {
+  --canvas: #fbf1e4;
+  --surface: #ffffff;
+  --surface-2: #fffaf2;
+  --ink: #3b2418;
+  --muted: #6a4b3a;
+  --line: #e6d3b8;
+  --accent: #b4492b;
+  --accent-ink: #a3401f;
+  --on-accent: #ffffff;
+  --success: #e4e7cf;
+  --success-ink: #3f4220;
+  --warning: #f6e7a8;
+  --warning-ink: #4a2f0e;
+  --danger: #fbe3dc;
+  --danger-ink: #8e3720;
+  --display: var(--font-fraunces);
+}
+
+[data-theme='walnut'] {
+  --canvas: #2a1d16;
+  --surface: #3a2a20;
+  --surface-2: #32241b;
+  --ink: #f6e9d8;
+  --muted: #d9c4a8;
+  --line: #5a4130;
+  --accent: #f08a4b;
+  --accent-ink: #f2a574;
+  --on-accent: #2a1d16;
+  --success: #33402a;
+  --success-ink: #cfe3b8;
+  --warning: #4a3a1e;
+  --warning-ink: #f2d98a;
+  --danger: #4a2620;
+  --danger-ink: #f4b3a0;
+  --display: var(--font-playfair);
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas text-ink font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
 }
 
 @media print {
