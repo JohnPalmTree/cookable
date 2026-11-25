@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { CheckCircle2, Info, XCircle } from 'lucide-react'
 
 export type ToastType = 'success' | 'error' | 'info'
 
@@ -22,10 +23,10 @@ export function showToast(message: string, type: ToastType = 'success') {
   }, 3500)
 }
 
-const COLORS = {
-  success: 'bg-green-600',
-  error: 'bg-red-600',
-  info: 'bg-gray-800',
+const STYLES = {
+  success: { icon: CheckCircle2, color: 'text-success-ink', border: 'border-l-success' },
+  error: { icon: XCircle, color: 'text-danger-ink', border: 'border-l-danger' },
+  info: { icon: Info, color: 'text-muted', border: 'border-l-line' },
 }
 
 export default function Toast() {
@@ -38,18 +39,24 @@ export default function Toast() {
     }
   }, [])
 
-  if (current.length === 0) return null
-
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 items-center">
-      {current.map((t) => (
-        <div
-          key={t.id}
-          className={`${COLORS[t.type]} text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg`}
-        >
-          {t.message}
-        </div>
-      ))}
+    <div
+      role="status"
+      aria-live="polite"
+      className="no-print fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2"
+    >
+      {current.map((t) => {
+        const { icon: Icon, color, border } = STYLES[t.type]
+        return (
+          <div
+            key={t.id}
+            className={`flex items-center gap-2 rounded-xl border border-l-4 border-line ${border} bg-surface px-4 py-2.5 text-sm font-medium text-ink shadow-lg`}
+          >
+            <Icon size={18} aria-hidden="true" className={color} />
+            {t.message}
+          </div>
+        )
+      })}
     </div>
   )
 }
