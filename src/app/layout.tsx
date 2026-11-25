@@ -30,7 +30,7 @@ const fontVariables = [dmSans.variable, lora.variable, fraunces.variable, playfa
 )
 
 export const metadata: Metadata = {
-  title: 'Fridge & Cookbook',
+  title: 'Cookable',
   description: 'Your digital kitchen',
 }
 
