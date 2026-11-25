@@ -1,21 +1,27 @@
+const bar = 'rounded bg-surface-2'
+
 export function SkeletonCard() {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 animate-pulse">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-8 h-8 bg-gray-100 rounded-full" />
+    <div
+      aria-hidden="true"
+      className="animate-pulse rounded-2xl border border-line bg-surface p-4 motion-reduce:animate-none"
+    >
+      <div className="mb-3 flex items-center gap-3">
+        <div className="h-8 w-8 rounded-full bg-surface-2" />
         <div>
-          <div className="h-3.5 w-28 bg-gray-100 rounded mb-1.5" />
-          <div className="h-3 w-16 bg-gray-100 rounded" />
+          <div className={`mb-1.5 h-3.5 w-28 ${bar}`} />
+          <div className={`h-3 w-16 ${bar}`} />
         </div>
       </div>
-      <div className="h-4 w-16 bg-gray-100 rounded" />
+      <div className={`h-4 w-16 ${bar}`} />
     </div>
   )
 }
 
 export function SkeletonList({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div role="status" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <span className="sr-only">Loading…</span>
       {Array.from({ length: count }).map((_, i) => (
         <SkeletonCard key={i} />
       ))}
