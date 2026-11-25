@@ -1,9 +1,10 @@
 'use client'
 import { createSupabaseBrowser } from '@/lib/supabaseBrowser'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import StylePicker from '@/components/layout/StylePicker'
+import type { ThemeId } from '@/lib/domain/themes'
 
 const links = [
   { href: '/', label: '🏠 Home' },
@@ -12,7 +13,13 @@ const links = [
   { href: '/shopping', label: '🛒 Shopping' },
 ]
 
-export default function Nav() {
+function linkClass(active: boolean) {
+  return `rounded-md text-sm font-medium transition-colors ${
+    active ? 'bg-surface text-ink' : 'text-muted hover:bg-surface hover:text-ink'
+  }`
+}
+
+export default function Nav({ theme }: { theme: ThemeId }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const supabase = createSupabaseBrowser()
@@ -25,66 +32,50 @@ export default function Nav() {
   }
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
-      <div className="max-w-5xl mx-auto px-4 flex items-center justify-between h-14">
-        <span className="font-semibold text-gray-900">🍳 Fridge & Cookbook</span>
+    <nav className="sticky top-0 z-10 border-b border-line bg-surface-2">
+      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
+        <span className="font-display text-lg font-semibold text-ink">🍳 Fridge & Cookbook</span>
 
         {/* Desktop links */}
-        <div className="hidden sm:flex gap-1">
+        <div className="hidden gap-1 sm:flex">
           {links.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                pathname === href
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-              }`}
-            >
+            <Link key={href} href={href} className={`px-3 py-1.5 ${linkClass(pathname === href)}`}>
               {label}
             </Link>
           ))}
-
-          <button
-            onClick={handleSignOut}
-            className="px-3 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors no-print"
-          >
+          <button onClick={handleSignOut} className={`no-print px-3 py-1.5 ${linkClass(false)}`}>
             Sign out
           </button>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="sm:hidden text-gray-500 hover:text-gray-900 p-1"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {open ? '✕' : '☰'}
-        </button>
+        <div className="flex items-center gap-2">
+          <StylePicker initial={theme} />
+
+          {/* Mobile hamburger */}
+          <button
+            className="p-1 text-muted hover:text-ink sm:hidden"
+            onClick={() => setOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {open ? '✕' : '☰'}
+          </button>
+        </div>
       </div>
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="sm:hidden border-t border-gray-100 bg-white px-4 py-2 flex flex-col gap-1">
+        <div className="flex flex-col gap-1 border-t border-line bg-surface-2 px-4 py-2 sm:hidden">
           {links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               onClick={() => setOpen(false)}
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                pathname === href
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-              }`}
+              className={`px-3 py-2 ${linkClass(pathname === href)}`}
             >
               {label}
             </Link>
           ))}
-
-          <button
-            onClick={handleSignOut}
-            className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors text-left"
-          >
+          <button onClick={handleSignOut} className={`px-3 py-2 text-left ${linkClass(false)}`}>
             Sign out
           </button>
         </div>
